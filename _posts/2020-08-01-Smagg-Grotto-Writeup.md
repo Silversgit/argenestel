@@ -1,11 +1,15 @@
 ---
 layout: post
 title: Smag Grotto Writeup
-date: 2020-08-01 00:00:00 +5:30
+date: 2020-08-02 00:00:00 +5:30
 description: The Following Post is writeup of smag grotto room of tryhackme # Add post description (optional)
 img: smaggroto.png # Add image post (optional)
 tags: [tryhackme, CTF, GTFObins] # add tag
 ---
+
+## Description:
+
+The Following Post is writeup of smag grotto room of tryhackme <https://tryhackme.com/room/smaggrotto>
 
 ## Summary:
 
