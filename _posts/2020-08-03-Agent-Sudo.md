@@ -1,9 +1,7 @@
 ---
-layout: post
 title: Agent Sudo
 date: 2020-08-03 00:00:00 +5:30
-description: The Following Post is writeup of smag grotto room of tryhackme # Add post description (optional)
-img: smaggroto.png # Add image post (optional)
+categories: [TryHackMe, easy]
 tags: [tryhackme, CTF, Sudo, CVE, Hashcracking, Steganography] # add tag
 ---
 

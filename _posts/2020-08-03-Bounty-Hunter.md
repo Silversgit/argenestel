@@ -1,9 +1,9 @@
 ---
-layout: post
+
 title: Bounty Hunter
 date: 2020-08-03 04:00:00 +5:30
 description: The Following Post is writeup of bountyhacker room of tryhackme # Add post description (optional)
-tags: [tryhackme, CTF, GTFObins, FTP] # add tag
+tags: [tryhackme, ctf, gtfobins, ftp] # add tag
 ---
 
 ## Description:

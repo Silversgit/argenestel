@@ -1,4 +1,4 @@
-I"R
+I"
 <div id="tags" class="d-flex flex-wrap ml-xl-2 mr-xl-2">
 
 
@@ -7,7 +7,11 @@
 
 
   <div>
-    <a class="tag" href="/tags/ctf/">CTF<span class="text-muted">4</span></a>
+    <a class="tag" href="/tags/ctf/">CTF<span class="text-muted">2</span></a>
+  </div>
+
+  <div>
+    <a class="tag" href="/tags/ctf/">ctf<span class="text-muted">2</span></a>
   </div>
 
   <div>
@@ -15,15 +19,19 @@
   </div>
 
   <div>
-    <a class="tag" href="/tags/flask/">Flask<span class="text-muted">1</span></a>
+    <a class="tag" href="/tags/flask/">flask<span class="text-muted">1</span></a>
   </div>
 
   <div>
-    <a class="tag" href="/tags/ftp/">FTP<span class="text-muted">1</span></a>
+    <a class="tag" href="/tags/ftp/">ftp<span class="text-muted">1</span></a>
   </div>
 
   <div>
-    <a class="tag" href="/tags/gtfobins/">GTFObins<span class="text-muted">2</span></a>
+    <a class="tag" href="/tags/gtfobins/">GTFObins<span class="text-muted">1</span></a>
+  </div>
+
+  <div>
+    <a class="tag" href="/tags/gtfobins/">gtfobins<span class="text-muted">1</span></a>
   </div>
 
   <div>
@@ -31,7 +39,7 @@
   </div>
 
   <div>
-    <a class="tag" href="/tags/haskell/">Haskell<span class="text-muted">1</span></a>
+    <a class="tag" href="/tags/haskell/">haskell<span class="text-muted">1</span></a>
   </div>
 
   <div>
