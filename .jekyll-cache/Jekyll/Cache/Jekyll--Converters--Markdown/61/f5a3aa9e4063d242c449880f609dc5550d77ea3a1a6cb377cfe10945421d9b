@@ -1,4 +1,4 @@
-I"3<div id="archives" class="pl-xl-2">
+I""<div id="archives" class="pl-xl-2">
 
   
   
@@ -7,6 +7,20 @@
     
   <span class="lead">2020</span>
   <ul class="list-unstyled">
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">10</span>
+        <span class="date month small text-muted">Aug</span>
+        <a href="/posts/uopeasy-writeup/">Uopeasy writeup</a>
+      </div>
+    </li>
+  
+
+  
+  
   
     <li>
       <div>

