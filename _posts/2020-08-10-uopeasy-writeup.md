@@ -4,7 +4,7 @@ title: Uopeasy writeup
 date: 2020-08-10 04:00:00 +5:30
 description: The Following Post is writeup of Uopeasy Room of tryhackme # Add post description (optional)
 categories: [TryHackMe, Medium]
-tags: [tryhackme, ctf, flask, haskell] # add tag
+tags: [tryhackme, ctf, wordpress, sqli] # add tag
 ---
 
 ## Description:
