@@ -3,6 +3,7 @@ layout: post
 title: Tartarus Writeup
 date: 2020-08-15 12:00:00 +5:30
 categories: [TryHackMe, Medium]
+image: /assets/img/tartarus/header.png
 tags: [tryhackme, ctf, http, leakedinfo] # add tag
 ---
 

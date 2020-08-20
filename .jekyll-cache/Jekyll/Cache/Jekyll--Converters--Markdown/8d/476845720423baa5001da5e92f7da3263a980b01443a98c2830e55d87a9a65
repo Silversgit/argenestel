@@ -1,4 +1,4 @@
-I"
+I"º
 <div id="tags" class="d-flex flex-wrap ml-xl-2 mr-xl-2">
 
 
@@ -11,7 +11,7 @@
   </div>
 
   <div>
-    <a class="tag" href="/tags/ctf/">ctf<span class="text-muted">3</span></a>
+    <a class="tag" href="/tags/ctf/">ctf<span class="text-muted">4</span></a>
   </div>
 
   <div>
@@ -19,7 +19,7 @@
   </div>
 
   <div>
-    <a class="tag" href="/tags/flask/">flask<span class="text-muted">2</span></a>
+    <a class="tag" href="/tags/flask/">flask<span class="text-muted">1</span></a>
   </div>
 
   <div>
@@ -39,7 +39,19 @@
   </div>
 
   <div>
-    <a class="tag" href="/tags/haskell/">haskell<span class="text-muted">2</span></a>
+    <a class="tag" href="/tags/haskell/">haskell<span class="text-muted">1</span></a>
+  </div>
+
+  <div>
+    <a class="tag" href="/tags/http/">http<span class="text-muted">1</span></a>
+  </div>
+
+  <div>
+    <a class="tag" href="/tags/leakedinfo/">leakedinfo<span class="text-muted">1</span></a>
+  </div>
+
+  <div>
+    <a class="tag" href="/tags/sqli/">sqli<span class="text-muted">1</span></a>
   </div>
 
   <div>
@@ -51,7 +63,11 @@
   </div>
 
   <div>
-    <a class="tag" href="/tags/tryhackme/">tryhackme<span class="text-muted">5</span></a>
+    <a class="tag" href="/tags/tryhackme/">tryhackme<span class="text-muted">6</span></a>
+  </div>
+
+  <div>
+    <a class="tag" href="/tags/wordpress/">wordpress<span class="text-muted">1</span></a>
   </div>
 
 
