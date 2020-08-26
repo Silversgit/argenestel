@@ -1,14 +1,15 @@
 ---
 
-title: Bounty Hunter
+title: Bounty Hacker
 date: 2020-08-03 04:00:00 +5:30
 description: The Following Post is writeup of bountyhacker room of tryhackme # Add post description (optional)
+categories: [TryHackMe, Easy]
 tags: [tryhackme, ctf, gtfobins, ftp] # add tag
 ---
 
 ## Description:
 
-The Following Post is writeup of Bounty Hunter room of tryhackme <https://tryhackme.com/room/cowboyhacker>
+The Following Post is writeup of Bounty Hacker room of tryhackme <https://tryhackme.com/room/cowboyhacker>
 
 |Machine|Details
 |:---|:--
