@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Anonymous Writeup
-date: 2020-08-20 11:00:00 +5:30
+date: 2020-08-26 11:00:00 +5:30
 categories: [TryHackMe, Medium]
 image: /assets/img/anonymous/header.png
 tags: [tryhackme, anonymous-ftp, gtfobins] # add tag
