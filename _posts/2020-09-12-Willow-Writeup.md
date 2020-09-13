@@ -94,7 +94,7 @@ and we know Willow is username.
 
 #### NFS
 
-We can also see there is a network file system.</br>
+We can also see there is a network file system.<br />
 
 ```bash
 ┌─[argenestel@parrot]─[~/Desktop/tryhackme/willow]
@@ -160,9 +160,9 @@ This would be too easy, don't you think? I actually gave you the root flag some 
 You've got my password now -- go find your flag!
 ```
 
-So we need to find flag</br>
-I stuck a bit and ended up looking for writeup</br>
-so we got user.jpg and we can use steghide to extract root flag.</br>
+So we need to find flag<br />
+I stuck a bit and ended up looking for writeup<br />
+so we got user.jpg and we can use steghide to extract root flag.<br />
 The hint was we already got flag and now we have root password.
 
 ```bash
