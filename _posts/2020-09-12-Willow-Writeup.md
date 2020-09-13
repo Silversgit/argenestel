@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Willow Writeup
-date: 2020-09-01 00:00:00 +5:30
+date: 2020-09-12 00:00:00 +5:30
 categories: [TryHackMe, Medium]
 tags: [tryhackme, ctf, rsa, steg] # add tag
 ---
