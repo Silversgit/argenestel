@@ -1,7 +1,7 @@
 ---
 layout: post
 title: DAV Writeup
-date: 2020-09-17 00:00:00 +5:30
+date: 2020-09-16 00:00:00 +5:30
 categories: [TryHackMe, Easy]
 tags: [tryhackme, owasp10, sudo] # add tag
 ---
