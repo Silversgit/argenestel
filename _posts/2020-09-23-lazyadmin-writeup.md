@@ -1,10 +1,9 @@
 ---
 layout: post
 title: Lazy Admin
-date: 2020-09-21 00:00:00 +5:30
-categories: [TryHackMe, Medium]
+date: 2020-09-23 00:00:00 +5:30
+categories: [TryHackMe, Easy]
 tags: [tryhackme, hashcracking, wordpress, GTFO] # add tag
-image: /assets/img/mrrobot/mrrobot.jpg
 ---
 
 ## Description
