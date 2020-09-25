@@ -4,7 +4,7 @@ title: Inoculation
 date: 2020-09-25 00:00:00 +5:30
 categories: [TryHackMe, Hard]
 tags: [tryhackme, burp, wireshark, webhooks, lxd] # add tag
-image: ![Icon](https://tryhackme-images.s3.amazonaws.com/room-icons/9e836e6ab23ecf6f6e615ec0d6335c6c.jpeg)
+image: /assets/img/inoculation/inoc.jpeg
 ---
 
 ## Description
@@ -85,7 +85,11 @@ seeing the port there is a dump.pcap and it have a information about user and pa
 
 ### Exploitation
 
+So we logged in
+
 ![Port](/assets/img/inoculation/login.png)
+
+I ran linpeas.sh to get privesc factors
 
 ```bash
 [+] My user
