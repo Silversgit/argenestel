@@ -53,8 +53,6 @@ So let;s see port 80
 
 #### port 80
 
-![Webpage](/assets/img/mrrobot/port80.png)
-
 So we can see few links after the Webpage loaded.
 Moving on to dirbust.
 
