@@ -13,9 +13,7 @@ title: Argenestel                          # the main title
 tagline: Writeups of CTFs,tryhackme and Hackthebox  # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Hello HaX0rs this is Argenestel Blog
-  I will be posting content of different 
-  Walkthroughs
+  An InfoSec Blog containing Walkthroughs from TryHackMe and CTFs.
 
 # Replace with the website url, e.g. 'https://username.github.io'
 url: 'https://argenestel.github.io'
