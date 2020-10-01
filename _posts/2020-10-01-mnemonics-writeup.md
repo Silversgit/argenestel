@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Mnemonic
-date: 2020-10-1 00:00:00 +5:30
+date: 2020-10-1 00:00:01 +5:30
 categories: [TryHackMe, Medium]
 tags: [osint, dirbust, code-analysis] # add tag
 image: /assets/img/mnemonic/mnem.png
