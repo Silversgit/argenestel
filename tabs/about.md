@@ -8,4 +8,6 @@ title: About
 # MIT License
 ---
 
-20 Yr Old CyberSecurity Enthusiast and CTF Player
+20 Yr Old CyberSecurity Enthusiast and CTF Player.
+
+I got my htb sub so i will be posting more content from htb.
