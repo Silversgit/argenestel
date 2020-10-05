@@ -2,7 +2,7 @@
 image: /assets/img/aster/aster.png
 layout: post
 title: Aster
-date: 2020-10-1 00:00:01 +5:30
+date: 2020-10-6 00:00:01 +5:30
 categories: [TryHackMe, Medium]
 tags: [asterisk, java, uncomply6] # add tag
 ---
