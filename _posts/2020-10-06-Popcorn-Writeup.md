@@ -2,13 +2,22 @@
 image: /assets/img/popcorn/popcorn.png
 layout: post
 title: Porncorn
-date: 2020-10-7 00:00:01 +5:30
+date: 2020-10-6 00:00:01 +5:30
 categories: [Hackthebox, Medium]
 tags: [torrent, web, upload] # add tag
 ---
 
+## Summary
+
+> We have torrent in port 80
+> Created an Account
+> There is an upload vulnerability in screenshot upload feature
+> After getting shell, linuxexpliotsuggester will show some exploits
+> Exploiting with nelson Exploit will give Root
+
 ## Walkthrough
 
+### Enumeration
 
 ```bash
 argenestel@parrot  ~/Desktop/hackthebox/popcorn  rustscan 10.10.10.6
@@ -57,7 +66,7 @@ Nmap done: 1 IP address (1 host up) scanned in 0.57 seconds
 
 ```
 
-###Port 80
+####Port 80
 
 Okay  let's dirbust the port80.
 
@@ -92,10 +101,6 @@ test                    [Status: 200, Size: 47067, Words: 2465, Lines: 651]
 torrent                 [Status: 301, Size: 310, Words: 20, Lines: 10]
 ```
 
-so i was unable to upload  a torrent file since is checking for it but successfully uploaded php by changing detail
-since it is checking content type i changed it from application/x-php to image/png
-and it was accepted as png
-
 ![port](/assets/img/popcorn/port80torrent.png)
 
 ![login](/assets/img/popcorn/login.png)
@@ -109,6 +114,9 @@ Okay let's check if uploading php is possible or not<br />
 ughh we can only upload torrent file.
 So looking into previously uploaded file we can upload screenshot to let's check by uploading a torrent file.
 
+since it is checking content type i changed it from application/x-php to image/png
+and it was accepted as png
+
 ![upload](/assets/img/popcorn/uploaded.png)
 
 Alright done now lets manupulate screenshot.
@@ -116,6 +124,8 @@ Alright done now lets manupulate screenshot.
 ![uploadpng](/assets/img/popcorn/uploadedpng.png)
 
 ![png](/assets/img/popcorn/pngerror.png)
+
+### Exploitation
 
 Hurrayy let's get shell
 
@@ -139,7 +149,7 @@ moving on to user
 
 so we got george username<br />
 
-![reg](/assets/img/popcorn/linuxexpliotsuggester.png)
+![reg](/assets/img/popcorn/linuxexploitsuggester.png)
 
 ![reg](/assets/img/popcorn/nelsonexp.png)
 
