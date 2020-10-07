@@ -1,7 +1,7 @@
 ---
 image: /assets/img/popcorn/popcorn.png
 layout: post
-title: Porncorn
+title: Popcorn
 date: 2020-10-6 00:00:01 +5:30
 categories: [Hackthebox, Medium]
 tags: [torrent, web, upload] # add tag
@@ -66,7 +66,7 @@ Nmap done: 1 IP address (1 host up) scanned in 0.57 seconds
 
 ```
 
-####Port 80
+#### Port 80
 
 Okay  let's dirbust the port80.
 
