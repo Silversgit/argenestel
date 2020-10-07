@@ -9,10 +9,10 @@ tags: [torrent, web, upload] # add tag
 
 ## Summary
 
-> We have torrent in port 80
-> Created an Account
-> There is an upload vulnerability in screenshot upload feature
-> After getting shell, linuxexpliotsuggester will show some exploits
+> We have torrent in port 80<br />
+> Created an Account<br />
+> There is an upload vulnerability in screenshot upload feature<br />
+> After getting shell, linuxexpliotsuggester will show some exploits<br />
 > Exploiting with nelson Exploit will give Root
 
 ## Walkthrough
