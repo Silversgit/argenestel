@@ -8,11 +8,11 @@ tags: [TryHackMe,redis,shell] # add tag
 ---
 ## Summary
 
->There are two ports open 80,6379
->Redis Server have unauth access.
->We can upload a php shell and get access
->XXD suid to read /etc/shadow
->Crack the hash and get password
+>There are two ports open 80,6379<br />
+>Redis Server have unauth access.<br />
+>We can upload a php shell and get access<br />
+>XXD suid to read /etc/shadow<br />
+>Crack the hash and get password<br />
 >User can sudo as root
 
 ## Walkthrough
@@ -99,7 +99,7 @@ So we successfully uploaded php shell
 
 ### PrivEsc
 
-![suidbits](/assets/img/res/suidbits.png)
+![suidbits](/assets/img/res/suid.png)
 
 ```bash
 www-data@ubuntu:/home/vianka$ LFILE=/etc/shadow
