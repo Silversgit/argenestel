@@ -130,7 +130,7 @@ syslog:*:17953:0:99999:7:::
 _apt:*:17953:0:99999:7:::
 messagebus:*:18506:0:99999:7:::
 uuidd:*:18506:0:99999:7:::
-vianka:$6$2p.tSTds$qWQfsXwXOAxGJUBuq2RFXqlKiql3jxlwEWZP6CWXm7kIbzR6WzlxHR.UHmi.hc1/TuUOUBo/jWQaQtGSXwvri0:18507:0:99999:7:::
+vianka:<redacted>c1/TuUOUBo/jWQaQtGSXwvri0:18507:0:99999:7:::
 ```
 
 ```bash
