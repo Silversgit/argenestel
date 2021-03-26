@@ -1,10 +1,9 @@
 ---
-image: /assets/img/hacked/hacked.png
 layout: post
 title: H4cked
 date: 2021-03-26 00:00:01 +5:30
 categories: [Tryhackme, Easy]
-tags: [] # add tag
+tags: [pcap, wireshark, ftp] # add tag
 ---
 
 
